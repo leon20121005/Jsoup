@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
-import android.text.method.ScrollingMovementMethod;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -26,7 +25,6 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         _textView = (TextView) findViewById(R.id.textView);
-        _textView.setMovementMethod(new ScrollingMovementMethod());
         _parseButton = (Button) findViewById(R.id.button2);
         _parseButton.setOnClickListener(new View.OnClickListener()
         {
