@@ -56,20 +56,15 @@ public class MainActivity extends AppCompatActivity
 
                 try
                 {
-                    Document doc = Jsoup.connect("http://www.ipeen.com.tw/search/taiwan/000/1-0-0-0/").get();
+                    Document doc = Jsoup.connect("http://zineblog.com.tw/blog/post/45501739").get();
                     String title = doc.title();
-//                    Elements links = doc.select("a[href]");
-                    Elements elements = doc.select("span");
+                    Elements links = doc.select("a[href]:contains(【)");
 
                     builder.append(title).append("\n");
 
-//                    for (Element link : links)
-//                    {
-//                        builder.append("\n").append("Link: ").append(link.attr("href")).append("\n").append("Text: ").append(link.text());
-//                    }
-                    for (Element element : elements)
+                    for (Element link : links)
                     {
-                        builder.append("\n").append("Text: ").append(element.text());
+                        builder.append("\n").append("Link: ").append(link.attr("href")).append("\n").append("Text: ").append(link.text());
                     }
                 }
                 catch (IOException e)
