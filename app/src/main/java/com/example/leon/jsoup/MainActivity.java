@@ -18,6 +18,10 @@ public class MainActivity extends AppCompatActivity
     private Button _clearButton;
     private TextView _textView;
 
+    private String HOME_URL = "http://zineblog.com.tw/blog/post/45501739";
+    private String HOME_CONDITION = "a[href]:contains(【)";
+    private String ADDRESS_CONDITION = "span:contains(地址)";
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -56,9 +60,9 @@ public class MainActivity extends AppCompatActivity
 
                 try
                 {
-                    Document doc = Jsoup.connect("http://zineblog.com.tw/blog/post/45501739").get();
+                    Document doc = Jsoup.connect(HOME_URL).get();
                     String title = doc.title();
-                    Elements links = doc.select("a[href]:contains(【)");
+                    Elements links = doc.select(HOME_CONDITION);
 
                     builder.append(title).append("\n");
 
@@ -90,7 +94,7 @@ public class MainActivity extends AppCompatActivity
         try
         {
             Document doc = Jsoup.connect(link).get();
-            Elements addresses = doc.select("span:contains(地址)");
+            Elements addresses = doc.select(ADDRESS_CONDITION);
 
             String[] segments = addresses.get(0).toString().split("<br>");
 
