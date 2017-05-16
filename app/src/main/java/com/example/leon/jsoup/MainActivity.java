@@ -8,7 +8,6 @@ import android.widget.TextView;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
 import java.io.IOException;
@@ -31,6 +30,7 @@ public class MainActivity extends AppCompatActivity
             @Override
             public void onClick(View view)
             {
+                _textView.setText("Parsing...");
                 GetWebSite();
             }
         });
@@ -62,9 +62,10 @@ public class MainActivity extends AppCompatActivity
 
                     builder.append(title).append("\n");
 
-                    for (Element link : links)
+                    for (int i = 0; i < 20; i++)
                     {
-                        builder.append("\n").append("Link: ").append(link.attr("href")).append("\n").append("Text: ").append(link.text());
+                        builder.append("\n").append("Title: ").append(links.get(i).text()).append("\n").append("Link: ").append(links.get(i).attr("href"));
+                        GetAddress(links.get(i).attr("href"), builder);
                     }
                 }
                 catch (IOException e)
@@ -82,5 +83,32 @@ public class MainActivity extends AppCompatActivity
                 });
             }
         }).start();
+    }
+
+    private void GetAddress(String link, StringBuilder builder)
+    {
+        try
+        {
+            Document doc = Jsoup.connect(link).get();
+            Elements addresses = doc.select("span:contains(地址)");
+
+            String[] segments = addresses.get(0).toString().split("<br>");
+
+            for (String segment : segments)
+            {
+                if (segment.contains("地址"))
+                {
+                    builder.append("\n").append("Address: ").append(segment).append("\n");
+                }
+            }
+        }
+        catch (IOException e)
+        {
+            builder.append("Error: ").append(e.getMessage()).append("\n");
+        }
+        catch (IndexOutOfBoundsException e)
+        {
+            builder.append("\n").append("Address: none").append("\n");
+        }
     }
 }
